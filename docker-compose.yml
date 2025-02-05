@@ -1,0 +1,24 @@
+services:
+  ag_data_box_map_service:
+    container_name: ag_data_box_map_service
+    restart: always
+    env_file: .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PORT=${PORT}
+        - DOCKER_WORKDIR=${DOCKER_WORKDIR}
+    ports:
+      - '0.0.0.0:${PORT}:3005'
+    networks:
+      backend:
+        aliases:
+          - ${DOCKER_NETWORK_NAME}
+    volumes:
+      - .:/${DOCKER_WORKDIR}
+
+networks:
+  backend:
+    name: ${DOCKER_NETWORK_NAME}
+    external: true
